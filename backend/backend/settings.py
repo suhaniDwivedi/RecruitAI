@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # Third Party Apps
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
 
     # Local Apps
@@ -48,7 +49,6 @@ INSTALLED_APPS = [
     'candidates',
     'applications',
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -129,3 +129,17 @@ STATIC_URL = 'static/'
 
 # CORS Settings
 CORS_ALLOW_ALL_ORIGINS = True
+
+# REST Framework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
