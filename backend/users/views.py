@@ -43,7 +43,11 @@ def add_company_user(request, company_id):
         return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
         
     user = User.objects.create_user(username=username, password=password, email=email, first_name=first_name)
-    UserProfile.objects.create(user=user, company=company, role='company')
+    # Signal already creates a profile; update it with company and role
+    profile = user.profile
+    profile.company = company
+    profile.role = 'company'
+    profile.save()
     
     serializer = UserSerializer(user)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
