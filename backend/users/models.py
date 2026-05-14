@@ -1,8 +1,32 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+def default_interview_stages():
+    return [
+        {"id": "initial", "name": "Initial Screening", "order": 1},
+        {"id": "technical", "name": "Technical Interview", "order": 2},
+        {"id": "behavioral", "name": "Behavioral Interview", "order": 3},
+        {"id": "final", "name": "Final Review", "order": 4}
+    ]
+
+def default_email_templates():
+    return {
+        "application_received": "Hi {name}, we received your application for {job_title}.",
+        "interview_scheduled": "Hi {name}, your interview for {job_title} has been scheduled for {date}.",
+        "rejection": "Hi {name}, thank you for your interest in {company_name}. Unfortunately, we will not be moving forward with your application at this time."
+    }
+
 class Company(models.Model):
     name = models.CharField(max_length=255)
+    domain = models.URLField(max_length=255, blank=True, null=True)
+    industry = models.CharField(max_length=255, blank=True, null=True)
+    size = models.CharField(max_length=50, blank=True, null=True)
+    
+    # Settings
+    hiring_preferences = models.JSONField(default=dict, blank=True)
+    interview_stages = models.JSONField(default=default_interview_stages, blank=True)
+    email_templates = models.JSONField(default=default_email_templates, blank=True)
+    
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -5,7 +5,11 @@ from .models import Company, UserProfile
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ['id', 'name', 'created_at']
+        fields = [
+            'id', 'name', 'domain', 'industry', 'size', 
+            'hiring_preferences', 'interview_stages', 'email_templates', 
+            'created_at'
+        ]
 
 class UserProfileSerializer(serializers.ModelSerializer):
     company_name = serializers.CharField(source='company.name', read_only=True)

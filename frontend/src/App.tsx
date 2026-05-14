@@ -3,6 +3,7 @@ import { Toaster } from "sonner";
 import Login from "./pages/Login";
 import Companies from "./pages/Companies";
 import CompanyDashboard from "./pages/CompanyDashboard";
+import CompanySettings from "./pages/CompanySettings";
 import Jobs from "./pages/Jobs";
 import Sidebar from "./components/Sidebar";
 
@@ -25,6 +26,7 @@ const AppContent = () => {
           <Route path="/" element={<Login />} />
           <Route path="/admin/companies" element={<Companies />} />
           <Route path="/company/dashboard" element={<CompanyDashboard />} />
+          <Route path="/company/settings" element={<CompanySettings />} />
           <Route path="/jobs" element={<Jobs />} />
         </Routes>
       </main>

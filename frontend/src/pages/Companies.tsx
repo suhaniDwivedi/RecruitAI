@@ -6,6 +6,9 @@ import { showToast } from '../utils/toast';
 const Companies: React.FC = () => {
   const [companies, setCompanies] = useState([]);
   const [newCompanyName, setNewCompanyName] = useState('');
+  const [newCompanyDomain, setNewCompanyDomain] = useState('');
+  const [newCompanyIndustry, setNewCompanyIndustry] = useState('');
+  const [newCompanySize, setNewCompanySize] = useState('');
   const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [addingCompany, setAddingCompany] = useState(false);
@@ -44,8 +47,16 @@ const Companies: React.FC = () => {
 
     setAddingCompany(true);
     try {
-      await api.post('/api/companies/', { name: newCompanyName });
+      await api.post('/api/companies/', { 
+        name: newCompanyName,
+        domain: newCompanyDomain,
+        industry: newCompanyIndustry,
+        size: newCompanySize
+      });
       setNewCompanyName('');
+      setNewCompanyDomain('');
+      setNewCompanyIndustry('');
+      setNewCompanySize('');
       showToast.success(`Company "${newCompanyName}" added successfully!`);
       await fetchCompanies();
     } catch (err: any) {
@@ -124,30 +135,73 @@ const Companies: React.FC = () => {
                 <Plus size={20} className="text-blue-600" />
                 Add New Company
               </h2>
-              <form onSubmit={handleAddCompany} className="flex gap-3">
-                <input
-                  type="text"
-                  className="flex-1 border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-slate-50 transition-all text-slate-900 placeholder-slate-400"
-                  placeholder="Enter company name (e.g., Acme Corp)"
-                  value={newCompanyName}
-                  onChange={(e) => setNewCompanyName(e.target.value)}
-                  disabled={addingCompany}
-                  required
-                />
+              <form onSubmit={handleAddCompany} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase mb-2 ml-1">Company Name</label>
+                    <input
+                      type="text"
+                      className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-slate-50 transition-all text-slate-900 placeholder-slate-400"
+                      placeholder="e.g. Acme Corp"
+                      value={newCompanyName}
+                      onChange={(e) => setNewCompanyName(e.target.value)}
+                      disabled={addingCompany}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase mb-2 ml-1">Domain</label>
+                    <input
+                      type="url"
+                      className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-slate-50 transition-all text-slate-900 placeholder-slate-400"
+                      placeholder="https://acme.com"
+                      value={newCompanyDomain}
+                      onChange={(e) => setNewCompanyDomain(e.target.value)}
+                      disabled={addingCompany}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase mb-2 ml-1">Industry</label>
+                    <input
+                      type="text"
+                      className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-slate-50 transition-all text-slate-900 placeholder-slate-400"
+                      placeholder="e.g. Technology"
+                      value={newCompanyIndustry}
+                      onChange={(e) => setNewCompanyIndustry(e.target.value)}
+                      disabled={addingCompany}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase mb-2 ml-1">Size</label>
+                    <select
+                      className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-slate-50 transition-all text-slate-900"
+                      value={newCompanySize}
+                      onChange={(e) => setNewCompanySize(e.target.value)}
+                      disabled={addingCompany}
+                    >
+                      <option value="">Select Size</option>
+                      <option value="1-10">1-10 employees</option>
+                      <option value="11-50">11-50 employees</option>
+                      <option value="51-200">51-200 employees</option>
+                      <option value="201-500">201-500 employees</option>
+                      <option value="500+">500+ employees</option>
+                    </select>
+                  </div>
+                </div>
                 <button
                   type="submit"
                   disabled={addingCompany}
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-slate-400 disabled:to-slate-500 text-white font-semibold px-8 py-3 rounded-lg transition-all shadow-md shadow-blue-600/30 flex items-center gap-2"
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-slate-400 disabled:to-slate-500 text-white font-semibold px-8 py-3 rounded-lg transition-all shadow-md shadow-blue-600/30 flex items-center justify-center gap-2"
                 >
                   {addingCompany ? (
                     <>
                       <Loader size={16} className="animate-spin" />
-                      Adding...
+                      Adding Company...
                     </>
                   ) : (
                     <>
                       <Plus size={16} />
-                      Add
+                      Create Company
                     </>
                   )}
                 </button>

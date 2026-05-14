@@ -51,3 +51,22 @@ def add_company_user(request, company_id):
     
     serializer = UserSerializer(user)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+@api_view(['GET', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def my_company(request):
+    if not hasattr(request.user, 'profile') or not request.user.profile.company:
+        return Response({"error": "User is not associated with any company"}, status=status.HTTP_404_NOT_FOUND)
+        
+    company = request.user.profile.company
+    
+    if request.method == 'GET':
+        serializer = CompanySerializer(company)
+        return Response(serializer.data)
+        
+    elif request.method == 'PATCH':
+        serializer = CompanySerializer(company, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

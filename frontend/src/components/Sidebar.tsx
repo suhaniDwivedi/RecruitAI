@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LogOut, Briefcase, LayoutDashboard, Building2, Menu } from 'lucide-react';
+import { LogOut, Briefcase, LayoutDashboard, Building2, Menu, Settings } from 'lucide-react';
 
 const Sidebar: React.FC = () => {
   const role = localStorage.getItem('user_role');
@@ -62,20 +62,36 @@ const Sidebar: React.FC = () => {
           )}
 
           {role === 'company' && (
-            <NavLink
-              to="/company/dashboard"
-              onClick={() => setIsOpen(false)}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${
-                  isActive
-                    ? 'bg-blue-50 text-blue-600 border border-blue-200'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                }`
-              }
-            >
-              <LayoutDashboard size={18} />
-              <span>Dashboard</span>
-            </NavLink>
+            <>
+              <NavLink
+                to="/company/dashboard"
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${
+                    isActive
+                      ? 'bg-blue-50 text-blue-600 border border-blue-200'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  }`
+                }
+              >
+                <LayoutDashboard size={18} />
+                <span>Dashboard</span>
+              </NavLink>
+              <NavLink
+                to="/company/settings"
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${
+                    isActive
+                      ? 'bg-blue-50 text-blue-600 border border-blue-200'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  }`
+                }
+              >
+                <Settings size={18} />
+                <span>Settings</span>
+              </NavLink>
+            </>
           )}
 
           <NavLink
